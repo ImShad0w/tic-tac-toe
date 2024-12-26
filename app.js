@@ -49,7 +49,6 @@ const Gameboard = (function () {
   };
 })();
 
-
 function Player(symbol) {
   let points = 0;
   const getPoints = () => points;
@@ -58,16 +57,30 @@ function Player(symbol) {
   return { symbol, getPoints, addPoints, resetPoints }
 }
 
+function computerPlayer(symbol) {
+  let points = 0;
+  const getPoints = () => points;
+  const addPoints = () => points++;
+  const resetPoints = () => points = 0;
+  const getRow = (min, max) => {
+    const minRow = Math.ceil(min);
+    const maxRow = Math.floor(max);
+    return Math.floor(Math.random() * (maxRow - minRow + 1) + minRow);
+  }
+  return { symbol, getPoints, addPoints, resetPoints, getRow }
+}
 
-
-function playRound() {
-  const symbol = readline.question("What symbol you want to play with? X or O").toUpperCase(); //Asks the symbol to use
+const playRound = (function () {
+  const symbol = readline.question("What symbol you want to play with? X or O: ").toUpperCase(); //Asks the symbol to use
+  const aiSymbol = symbol === "X" ? "O" : "X";
   if (symbol != "X" && symbol != "O") {
+    playRound();
     console.log("Invalid symbol, pick one of the two allowed symbols.");
     return playRound(); //Plays the function again if no symbol or if symbol doesn't meet reqs
   }
   const player1 = Player(symbol); //Assigns player1 to symbol
-  while (player1.getPoints() != 3) {
+  const aiPlayer = computerPlayer(aiSymbol); //Assign ai player to the opposite symbol
+  while (player1.getPoints() != 3 || aiPlayer.getPoints() != 3) {
     const row = parseInt(readline.question("Choose the row from 1 - 3: ")) - 1;
     const column = parseInt(readline.question("Choose the column from 1 - 3: ")) - 1;
     if (Gameboard.makeMove(row, column, player1.symbol)) {
@@ -85,9 +98,7 @@ function playRound() {
   if (player1.getPoints() === 3) {
     console.log(`${player1.symbol} won the game!!!!`);
   }
-};
-
-playRound();
+})();
 
 
 
