@@ -62,45 +62,53 @@ function computerPlayer(symbol) {
   const getPoints = () => points;
   const addPoints = () => points++;
   const resetPoints = () => points = 0;
-  const getRow = (min, max) => {
-    const minRow = Math.ceil(min);
-    const maxRow = Math.floor(max);
-    return Math.floor(Math.random() * (maxRow - minRow + 1) + minRow);
-  }
-  return { symbol, getPoints, addPoints, resetPoints, getRow }
+  const getMove = () => {
+    let row, col;
+    do {
+      row = Math.floor(Math.random() * 3);
+      col = Math.floor(Math.random() * 3);
+    } while (!Gameboard.makeMove(row, col, symbol));
+    return { row, col };
+  };
+  return { symbol, getPoints, addPoints, resetPoints, getMove }
 }
 
 const playRound = (function () {
-  const symbol = readline.question("What symbol you want to play with? X or O: ").toUpperCase(); //Asks the symbol to use
-  const aiSymbol = symbol === "X" ? "O" : "X";
-  if (symbol != "X" && symbol != "O") {
-    playRound();
+  const symbol = readline.question("What symbol you want to play with? X or O: ").toUpperCase();
+  if (symbol !== "X" && symbol !== "O") {
     console.log("Invalid symbol, pick one of the two allowed symbols.");
-    return playRound(); //Plays the function again if no symbol or if symbol doesn't meet reqs
+    return playRound(); // Retry for valid input
   }
-  const player1 = Player(symbol); //Assigns player1 to symbol
-  const aiPlayer = computerPlayer(aiSymbol); //Assign ai player to the opposite symbol
-  while (player1.getPoints() != 3 || aiPlayer.getPoints() != 3) {
-    const row = parseInt(readline.question("Choose the row from 1 - 3: ")) - 1;
-    const column = parseInt(readline.question("Choose the column from 1 - 3: ")) - 1;
-    if (Gameboard.makeMove(row, column, player1.symbol)) {
-      Gameboard.display();
-      if (Gameboard.checkWinner(player1.symbol)) {
-        player1.addPoints();
-        console.log("Player has won this round!")
-        Gameboard.reset();
-      }
+
+  const player1 = Player(symbol);
+  const aiPlayer = computerPlayer(symbol === "X" ? "O" : "X");
+
+  while (player1.getPoints() < 3 && aiPlayer.getPoints() < 3) {
+    Gameboard.display();
+    let validMove = false;
+    while (!validMove) {
+      const row = parseInt(readline.question("Choose the row (1-3): ")) - 1;
+      const col = parseInt(readline.question("Choose the column (1-3): ")) - 1;
+      validMove = Gameboard.makeMove(row, col, player1.symbol);
+      if (!validMove) console.log("Invalid move. Try again.");
     }
-    else {
-      console.log("This move either has already been played, or is invalid")
+
+    if (Gameboard.checkWinner(player1.symbol)) {
+      player1.addPoints();
+      console.log("Player has won this round!");
+      Gameboard.reset();
+      continue;
+    }
+
+    aiPlayer.getMove();
+
+    if (Gameboard.checkWinner(aiPlayer.symbol)) {
+      aiPlayer.addPoints();
+      console.log("Computer has won this round!");
+      Gameboard.reset();
     }
   }
-  if (player1.getPoints() === 3) {
-    console.log(`${player1.symbol} won the game!!!!`);
-  }
+
+  Gameboard.display();
+  console.log(`${player1.getPoints() === 3 ? "Player" : "Computer"} wins the game!`);
 })();
-
-
-
-
-
