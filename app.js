@@ -112,3 +112,8 @@ const playRound = (function () {
   Gameboard.display();
   console.log(`${player1.getPoints() === 3 ? "Player" : "Computer"} wins the game!`);
 })();
+
+
+function displayGame() {
+
+}
