@@ -71,4 +71,13 @@ body{
   grid-gap: 10px;
   width: 400px;
   height: 400px;
+  background-color:black;
+}
+
+.gameboard-square{
+  display:flex;
+  background-color: #f0f0f0;
+  font-size:5em;
+  justify-content:center; 
+  align-items:center;
 }
