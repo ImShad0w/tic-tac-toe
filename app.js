@@ -128,4 +128,10 @@ function computerPlayer(symbol) {
 //})();
 
 
-const square = document.querySelectorAll("gameboard-square")
+const squares = document.querySelectorAll("gameboard-square");
+
+squares.forEach((square) => {
+  square.addEventListener("click", () => {
+    if ()
+  })
+})
