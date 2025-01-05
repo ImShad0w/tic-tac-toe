@@ -127,5 +127,3 @@ function computerPlayer(symbol) {
 //  console.log(`${player1.getPoints() === 3 ? "Player" : "Computer"} wins the game!`);
 //})();
 
-
-const square = document.querySelectorAll("gameboard-square")
