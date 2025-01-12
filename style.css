@@ -80,6 +80,10 @@ body{
   font-size:5em;
   justify-content:center; 
   align-items:center;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 127px;
+  height: 127px;
 }
 
 #modal{
