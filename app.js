@@ -1,8 +1,3 @@
-//TODO
-//Create gameboard iife
-//Create player factory
-//Add logic to check if a player won
-
 let player1;
 let aiPlayer;
 let gameOver = false;
@@ -88,7 +83,7 @@ function computerPlayer(symbol) {
   };
   return { symbol, getMove, getPoints, addPoints, resetPoints };
 }
-
+const highlight = document.querySelector(".highlight")
 function startGame() {
   const squares = document.querySelectorAll(".gameboard-square");
   gameOver = false;
@@ -113,6 +108,7 @@ function handlePlayerMove(event) {
       player1.addPoints();
       displayPoints();
       resetRound();
+      highlight.textContent = "Player has won this round!"
       return;
     }
 
@@ -122,6 +118,7 @@ function handlePlayerMove(event) {
       aiPlayer.addPoints();
       displayPoints();
       resetRound();
+      highlight.textContent = "Computer has won this round!"
       return;
     }
   } else {
@@ -131,8 +128,10 @@ function handlePlayerMove(event) {
   if (player1.getPoints() === 3) {
     gameOver = true;
     alert("Player has won the game!");
+    playAgain();
   } else if (aiPlayer.getPoints() === 3) {
     gameOver = true;
+    playAgain();
     alert("AI has won the game!");
   }
 }
@@ -154,4 +153,16 @@ function displayPoints() {
   const computerPoints = document.querySelector(".computer")
   playerPoints.textContent = `Player points: ${player1.getPoints()}`
   computerPoints.textContent = `Computer points ${aiPlayer.getPoints()} `
+}
+
+function playAgain() {
+  if (gameOver) {
+    let answer = prompt("Want to play again?").toUpperCase().trim();
+    if (answer === "YES") {
+      location.reload();
+    }
+    else {
+      alert("The game has ended refresh to play again!");
+    }
+  }
 }
