@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap');
+
 /* 1. Use a more-intuitive box-sizing model */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -13,6 +15,8 @@ body {
   line-height: 1.5;
   /* 4. Improve text rendering */
   -webkit-font-smoothing: antialiased;
+  font-family: "Geologica";
+  color: white;
 }
 
 /* 5. Improve media defaults */
@@ -50,6 +54,7 @@ body{
   display: flex;
   flex-direction: column;
   align-items:center;
+  background-color:#2d142c;
 }
 
 .container{
@@ -69,9 +74,15 @@ body{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
-  width: 400px;
-  height: 400px;
-  background-color:black;
+  width: 500px;
+  height: 500px;
+  background-color: #510a32;
+  padding: 50px;
+  box-sizing: border-box;
+  border-radius: 40px;
+box-shadow: 1px 15px 145px 11px rgba(0,0,0,0.75);
+-webkit-box-shadow: 1px 15px 145px 11px rgba(0,0,0,0.75);
+-moz-box-shadow: 1px 15px 145px 11px rgba(0,0,0,0.75);
 }
 
 .gameboard-square{
@@ -82,9 +93,10 @@ body{
   align-items:center;
   box-sizing: border-box;
   overflow: hidden;
-  width: 127px;
-  height: 127px;
-}
+  width: 120px;
+  height: 120px;
+  color: black;
+  border-radius: 10px;}
 
 #modal{
   display: none;
@@ -97,5 +109,29 @@ body{
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  color: black;
 }
+
+
+.scoreboard{
+  width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 2em;
+  margin: 50px;
+}
+
+h1{
+  font-size: 3em;
+}
+
+body > h1{
+  margin: 40px;
+}
+
+.highlight{
+  margin: 10px;
+  font-size: 2em;
+}
+
 

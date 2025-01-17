@@ -149,8 +149,8 @@ function resetGameboard() {
 }
 
 function displayPoints() {
-  const playerPoints = document.querySelector(".player")
-  const computerPoints = document.querySelector(".computer")
+  const playerPoints = document.querySelector(".playerPoints")
+  const computerPoints = document.querySelector(".computerPoints")
   playerPoints.textContent = `Player points: ${player1.getPoints()}`
   computerPoints.textContent = `Computer points ${aiPlayer.getPoints()} `
 }
