@@ -14,8 +14,11 @@ window.addEventListener("DOMContentLoaded", () => {
       player1 = Player(button.textContent);
       aiPlayer = computerPlayer(player1.symbol === "X" ? "O" : "X");
       modal.style.display = "none";
-
+      const playerSymbol = document.querySelector(".playerSymbol")
+      const computerSymbol = document.querySelector(".computerSymbol")
       // Start the game after the modal is closed
+      playerSymbol.textContent = player1.symbol;
+      computerSymbol.textContent = aiPlayer.symbol;
       startGame();
     });
   });
@@ -52,6 +55,10 @@ const Gameboard = (function () {
         }
       }
     },
+
+    isFull: function () {
+      return gameboard.every(row => row.every(cell => cell !== null))
+    }
   };
 })();
 
@@ -101,38 +108,60 @@ function handlePlayerMove(event) {
   const square = event.target;
   const row = square.dataset.row;
   const col = square.dataset.col;
+
+
+  //Check if the move is valid
   if (Gameboard.makeMove(row, col, player1.symbol)) {
+    highlight.textContent = "Make a move!"
     square.textContent = player1.symbol;
+    displayPoints();
+  }
+  else {
+    highlight.textContent = "Invalid move, try again!"
+    return;
+  }
 
-    if (Gameboard.checkWinner(player1.symbol)) {
-      player1.addPoints();
-      displayPoints();
-      resetRound();
-      highlight.textContent = "Player has won this round!"
-      return;
-    }
+  //Updates content of the square
 
-    aiPlayer.getMove();
 
-    if (Gameboard.checkWinner(aiPlayer.symbol)) {
-      aiPlayer.addPoints();
-      displayPoints();
-      resetRound();
-      highlight.textContent = "Computer has won this round!"
-      return;
-    }
-  } else {
-    alert("Invalid move! Choose another square.");
+  if (Gameboard.checkWinner(player1.symbol)) {
+    player1.addPoints();
+    displayPoints();
+    resetRound();
+    highlight.textContent = "Player has won this round!"
+    return;
+  }
+
+  if (Gameboard.isFull() && !Gameboard.checkWinner(player1.symbol)) {
+    highlight.textContent = "It's a draw!";
+    resetRound();
+    return;
+  }
+
+  aiPlayer.getMove();
+
+  if (Gameboard.checkWinner(aiPlayer.symbol)) {
+    aiPlayer.addPoints();
+    displayPoints();
+    resetRound();
+    highlight.textContent = "Computer has won this round!"
+    return;
+  }
+
+  if (Gameboard.isFull() && !Gameboard.checkWinner(aiPlayer.symbol)) {
+    highlight.textContent = "It's a draw!";
+    resetRound();
+    return;
   }
 
   if (player1.getPoints() === 3) {
     gameOver = true;
-    alert("Player has won the game!");
+    highlight.textContent = "Player has won the game!"
     playAgain();
   } else if (aiPlayer.getPoints() === 3) {
     gameOver = true;
     playAgain();
-    alert("AI has won the game!");
+    highlight.textContent = "Computer has won the game!"
   }
 }
 
@@ -152,7 +181,7 @@ function displayPoints() {
   const playerPoints = document.querySelector(".playerPoints")
   const computerPoints = document.querySelector(".computerPoints")
   playerPoints.textContent = `Player points: ${player1.getPoints()}`
-  computerPoints.textContent = `Computer points ${aiPlayer.getPoints()} `
+  computerPoints.textContent = `Computer points: ${aiPlayer.getPoints()}`
 }
 
 function playAgain() {

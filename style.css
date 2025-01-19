@@ -53,16 +53,17 @@ h1, h2, h3, h4, h5, h6 {
 body{
   display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items: center;
   background-color:#2d142c;
 }
 
 .container{
   display: flex;
-  flex-direction:column;
-  align-items:center;
+  justify-content: center;
   width:100%;
   height:100%;
+  margin-top: 100px;
+  gap: 200px;
 }
 
 
@@ -134,4 +135,27 @@ body > h1{
   font-size: 2em;
 }
 
+.player{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  font-size: 1.5em;
+  width: 200px;
+}
 
+.computer{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  font-size: 1.5em;
+}
+
+.player > div{
+  font-size: 4em;
+}
+
+.computer > div{
+  font-size: 4em;
+}
