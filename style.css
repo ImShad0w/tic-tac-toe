@@ -97,8 +97,14 @@ box-shadow: 1px 15px 145px 11px rgba(0,0,0,0.75);
   width: 120px;
   height: 120px;
   color: black;
-  border-radius: 10px;}
+  border-radius: 10px;
+  pointer-events: none; /* Disabled by default */
+}
 
+.gameboard-square.enabled{
+  pointer-events: auto;
+  cursor: pointer;
+}
 #modal{
   display: none;
   position: fixed;
@@ -133,6 +139,7 @@ body > h1{
 .highlight{
   margin: 10px;
   font-size: 2em;
+  text-align: center;
 }
 
 .player{
@@ -158,4 +165,24 @@ body > h1{
 
 .computer > div{
   font-size: 4em;
+}
+
+.userName.invalid{
+  border: 1px red solid;
+}
+
+#startBtn{
+  height: 100px;
+  width: 175px;
+  font-size: 2em;
+  margin: 20px;
+  border-radius: 20px;
+  background-color: #801336;
+  color: white;
+  border:none;
+  transition: background-color 0.5s linear;
+}
+
+#startBtn:hover{
+  background-color: #c71c42;
 }

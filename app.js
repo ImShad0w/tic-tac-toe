@@ -1,29 +1,33 @@
 let player1;
 let aiPlayer;
-let gameOver = false;
+let gameOver = true;
+let playerUsername;
 
-window.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("modal");
-
-  // Display the modal when the DOM is loaded
-  modal.style.display = "block";
-
-  const buttons = modal.querySelectorAll("button");
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      player1 = Player(button.textContent);
-      aiPlayer = computerPlayer(player1.symbol === "X" ? "O" : "X");
-      modal.style.display = "none";
-      const playerSymbol = document.querySelector(".playerSymbol")
-      const computerSymbol = document.querySelector(".computerSymbol")
-      // Start the game after the modal is closed
-      playerSymbol.textContent = player1.symbol;
-      computerSymbol.textContent = aiPlayer.symbol;
+const startBtn = document.getElementById("startBtn");
+const userNameInput = document.querySelector(".userName");
+if (gameOver) {
+  startBtn.addEventListener("click", () => {
+    if (userNameInput.value) {
+      playerUsername = userNameInput.value;
+      highlight.textContent = "Make a move!";
+      userNameInput.classList.remove("invalid")
+      player1 = Player("X");
+      aiPlayer = computerPlayer("O");
+      userNameInput.style.display = "none";
+      startBtn.textContent = "Restart";
+      const playerSymbolShowcase = document.querySelector(".playerSymbol");
+      const aiSymbolShowcase = document.querySelector(".computerSymbol");
+      playerSymbolShowcase.textContent = "X";
+      aiSymbolShowcase.textContent = "O";
       startGame();
-    });
-  });
-});
-
+    }
+    else {
+      userName.classList.add("invalid")
+      highlight.textContent = "Insert a username and click the button again!";
+      return;
+    }
+  })
+}
 const Gameboard = (function () {
   const gameboard = [
     [null, null, null],
@@ -92,12 +96,15 @@ function computerPlayer(symbol) {
 }
 const highlight = document.querySelector(".highlight")
 function startGame() {
+  resetRound();
   const squares = document.querySelectorAll(".gameboard-square");
   gameOver = false;
   player1.resetPoints();
   aiPlayer.resetPoints();
+  displayPoints();
 
   squares.forEach(square => {
+    square.classList.add("enabled");
     square.addEventListener("click", handlePlayerMove);
   });
 }
@@ -128,7 +135,7 @@ function handlePlayerMove(event) {
     player1.addPoints();
     displayPoints();
     resetRound();
-    highlight.textContent = "Player has won this round!"
+    highlight.textContent = `${playerUsername} has won this round!`
     return;
   }
 
@@ -156,15 +163,13 @@ function handlePlayerMove(event) {
 
   if (player1.getPoints() === 3) {
     gameOver = true;
-    highlight.textContent = "Player has won the game!"
-    playAgain();
+    highlight.innerHTML = `${playerUsername} has won the game!<br>Press restart to play again!`
   } else if (aiPlayer.getPoints() === 3) {
     gameOver = true;
-    playAgain();
     highlight.textContent = "Computer has won the game!"
   }
 }
-
+//Resets the gameboard array and DOM content
 function resetRound() {
   Gameboard.reset();
   resetGameboard();
@@ -177,21 +182,11 @@ function resetGameboard() {
   });
 }
 
+//Displays points in the selected object with the username
 function displayPoints() {
   const playerPoints = document.querySelector(".playerPoints")
   const computerPoints = document.querySelector(".computerPoints")
-  playerPoints.textContent = `Player points: ${player1.getPoints()}`
+  playerPoints.textContent = `${playerUsername} points: ${player1.getPoints()}`
   computerPoints.textContent = `Computer points: ${aiPlayer.getPoints()}`
 }
 
-function playAgain() {
-  if (gameOver) {
-    let answer = prompt("Want to play again?").toUpperCase().trim();
-    if (answer === "YES") {
-      location.reload();
-    }
-    else {
-      alert("The game has ended refresh to play again!");
-    }
-  }
-}
